@@ -2,16 +2,16 @@ import React from 'react'
 
 import { motion } from 'framer-motion'
 
-export const LoadingCircle = () => {
+export const LoadingCircle = ({width = 100, height = 100, position = 'absolute'}) => {
   return (
     <motion.div 
         style={{
-            width: 100,
-            height: 100,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            translate: '-50% -50%'
+            width: width,
+            height: height,
+            position: position,
+            top: position === 'absolute' ? '50%' : null,
+            left: position === 'absolute' ?  '50%' : null,
+            translate: position === 'absolute' ?  '-50% -50%' : null
         }}
         
         animate={{rotate: ["0deg", "360deg"]}}

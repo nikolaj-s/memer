@@ -22,7 +22,7 @@ export const fetchFeed = createAsyncThunk(
             const data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
             .then(data => {
 
-                const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.selftext.length === 0)
+                const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.preview)
                 
                 return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed};
             })
@@ -89,7 +89,7 @@ const FeedSlice = createSlice({
                 state.feed = [...state.feed, ...action.payload.posts]
             }
             
-            const src_index = state.default_sources.findIndex(e => e.src = action.payload.src);
+            const src_index = state.default_sources.findIndex(e => e.src === action.payload.src);
 
             state.default_sources[src_index].after = action.payload.after;
         

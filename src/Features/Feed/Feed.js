@@ -6,6 +6,7 @@ import './Feed.css';
 import { fetchFeed, selectFeed, selectFeedLoading} from './FeedSlice';
 import { Post } from '../../Components/Post/Post';
 import { AnimatePresence, motion } from 'framer-motion';
+import { LoadingMore } from '../../Components/LoadingMore/LoadingMore';
 
 export const Feed = () => {
 
@@ -37,6 +38,7 @@ export const Feed = () => {
     const swipePower = (offset, velocity) => {
         return Math.abs(offset) * velocity;
     };
+    
     const dispatch = useDispatch();
 
     const loading = useSelector(selectFeedLoading);
@@ -47,14 +49,16 @@ export const Feed = () => {
 
     const paginate = (newDirection) => {
 
-        if (loading) return;
+        if (feed.length === 0) return;
 
         if (newDirection === -1 && page === 0) return;
 
         if (newDirection === 1) {
-            if (feed.length - 1 === page) {
-                return dispatch(fetchFeed({sort: sortOption}))
+            if (feed.length - 5 === page) {
+                dispatch(fetchFeed({sort: sortOption}))
             }
+
+            if (feed.length - 1 === page) return;
         }
 
         setPage([page + newDirection, newDirection]);
@@ -69,8 +73,6 @@ export const Feed = () => {
     }, [sortOption])
     
     const handleLoadMore = (e) => {
-        
-        if (loading) return;
 
         if (e.deltaY === 100) {
             
@@ -117,6 +119,7 @@ export const Feed = () => {
                 }
                 </AnimatePresence>
             </div>
+            <LoadingMore loading={loading} />
         </div>
     )
 }

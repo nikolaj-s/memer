@@ -1,0 +1,14 @@
+
+.loading-more-container {
+    position: fixed;
+    z-index: 10;
+    bottom: 15px;
+    display: flex;
+    left: 5px;
+    align-items: center;
+}
+
+.loading-more-container p {
+    color: var(--text-color);
+    margin-left: 4px;
+}

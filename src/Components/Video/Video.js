@@ -79,6 +79,8 @@ export const Video = ({video, id}) => {
         aud_el.play()
         .catch(e => {return});
 
+        togglePlaying(true);
+
         toggleLoading(false);
 
         toggleInteracted(true);
@@ -105,7 +107,6 @@ export const Video = ({video, id}) => {
              className='video-progress-bar-container'>
                 <div style={{height: '100%', width: `${progress}%`, backgroundColor: 'red', transition: '0.1s'}} ></div>
             </div>
-            <div className='video-overlay-controls-stopper' />
         </div> 
         : null}
         </>
