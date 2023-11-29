@@ -1,0 +1,14 @@
+
+.menu-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+

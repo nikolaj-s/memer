@@ -1,0 +1,9 @@
+
+.line-spacer {
+    width: 98%;
+    flex-shrink: 0;
+    height: 2px;
+    border-radius: 3px;
+    z-index: 2;
+    background-color: var(--accent-color);
+}

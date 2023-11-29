@@ -1,0 +1,14 @@
+
+.image-wrapper {
+    width: 100%;
+    z-index: 1;
+    position: relative;
+}
+
+.image-wrapper img {
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+    max-height: 100vh;
+    transition: 0.1s;
+}

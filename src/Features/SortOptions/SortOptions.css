@@ -1,0 +1,31 @@
+.sort-options-menu {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    width: 180px;
+    background-color: var(--alt-accent-color);
+    padding: 10px;
+    z-index: 3;
+}
+
+.sort-by-wrapper {
+    margin-top: 15px;
+    width: 98%;
+    display: flex;
+    z-index: 3;
+    margin-left: 2%;
+    justify-content: flex-start;
+}
+
+.sort-options-menu h3 {
+    color: var(--text-color);
+    font-weight: 400;
+    cursor: pointer;
+    width: 100%;
+    margin: 0;
+    padding: 5px 0px;
+}
+
+.sort-options-menu h3:hover {
+    opacity: 0.8;
+}

@@ -1,0 +1,14 @@
+
+.app-title {
+    width: 100%;
+    text-align: center;
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.app-title span {
+    font-weight: 400;
+    color: var(--red-color);
+}
