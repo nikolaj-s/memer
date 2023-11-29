@@ -19,7 +19,7 @@ export const fetchFeed = createAsyncThunk(
 
             after = default_sources[indx].after;
 
-            const data = await Axios.get(`http://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
+            const data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
             .then(data => {
 
                 const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.selftext.length === 0)
