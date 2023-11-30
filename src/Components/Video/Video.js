@@ -5,6 +5,7 @@ import { VideoPlayOverlayAnimation } from './VideoPlayOverlayAnimation/VideoPlay
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMutedState, setAudioAvailable } from '../../Features/ControlBar/ControlBarSlice';
+import { MediaError } from '../MediaError/MediaError';
 
 export const Video = ({video, id}) => {
 
@@ -12,11 +13,13 @@ export const Video = ({video, id}) => {
 
     const [playing, togglePlaying] = React.useState(false);
 
-    const [interacted, toggleInteracted] = React.useState(false);
+    const [interacted, toggleInteracted] = React.useState(true);
 
     const [progress, setProgress] = React.useState(0);
 
     const [loading, toggleLoading] = React.useState(true);
+
+    const [error, toggleError] = React.useState(false);
 
     const muted = useSelector(selectMutedState);
 
@@ -96,16 +99,18 @@ export const Video = ({video, id}) => {
         <>
         {video ?
         <div onClick={handlePlayState} className='video-wrapper'>
+            {error ? <MediaError /> : null}
             {loading ?
             <LoadingCircle />
             : null}
             <VideoPlayOverlayAnimation color="white" interacted={interacted} playing={playing} />
             <video
+            onError={() => {toggleLoading(false); toggleError(true)}}
             autoPlay={true}
             playsInline
             onClick={(e) => {e.preventDefault()}}
             muted={muted}
-            style={{opacity: loading ? 0 : 1}}
+            style={{opacity: loading || error ? 0 : 1}}
             onCanPlay={onCanPlay}
             onTimeUpdate={handleProgress} controls={false} crossOrigin='anonymous' id={video + id} src={video} loop={true} />
             <audio 

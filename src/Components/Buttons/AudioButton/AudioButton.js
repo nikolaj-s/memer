@@ -12,7 +12,7 @@ export const AudioButton = ({action, state}) => {
     id={'audio-toggle-button'}
     transition={{duration: 0.1}}
     whileTap={{scale: 1.3}}
-    whileHover={{opacity: .6}}
+    whileHover={{scale: 1.1}}
     style={{opacity: audioAvailable ? 1 : 0.4}}
     onClick={action} className='control-button'>
         {state ?

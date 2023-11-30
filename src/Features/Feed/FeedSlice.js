@@ -19,7 +19,7 @@ export const fetchFeed = createAsyncThunk(
             const {default_sources, current} = getState().FeedSlice;
 
             if (window.location.pathname === '/') {
-                let indx = Math.floor((Math.random() * (default_sources.length - 1)));
+                let indx = Math.floor((Math.random() * (default_sources.length)));
                 
                 src = default_sources[indx].src;
 
@@ -30,8 +30,8 @@ export const fetchFeed = createAsyncThunk(
                     if (category.path === window.location.pathname) {
 
                         let arr = category.state.map(i => {return {src: i, after: null}})
-                        console.log(arr)
-                        let indx = Math.floor((Math.random() * (arr.length - 1)));
+                        
+                        let indx = Math.floor((Math.random() * (arr.length)));
 
                         new_current = arr;
 
@@ -45,7 +45,7 @@ export const fetchFeed = createAsyncThunk(
 
             } else if (current.length > 0) {
 
-                let indx = Math.floor((Math.random() * (current.length - 1)));
+                let indx = Math.floor((Math.random() * (current.length)));
 
                 src = current[indx].src;
 
@@ -99,6 +99,15 @@ const FeedSlice = createSlice({
         }, {
             after: false,
             src: 'pussy'
+        },{
+            src: 'sexygirls',
+            after: false
+        },{
+            src: 'AlldayfuckNSFW',
+            after: false
+        },{
+            src: 'MagicNsfw',
+            after: false
         }],
         loading: false,
         currentPosition: 0,
@@ -146,7 +155,7 @@ const FeedSlice = createSlice({
 
                 const new_current = action.payload.new_current.map(i => {
                     if (i.src === action.payload.src) {
-                        return {src: i.src, after: action.payload.src}
+                        return {src: i.src, after: action.payload.after}
                     } else {
                         return i;
                     }

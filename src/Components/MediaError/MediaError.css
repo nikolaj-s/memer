@@ -1,0 +1,17 @@
+
+.media-error-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.media-error-container svg {
+    width: 200px;
+    height: 200px;
+}

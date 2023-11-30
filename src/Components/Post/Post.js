@@ -57,7 +57,7 @@ export const Post = ({data}) => {
             setImage(null);
         }
     // eslint-disable-next-line
-    }, [HDQuality])
+    }, [HDQuality, data])
 
     const handleSource = () => {
         let link;
