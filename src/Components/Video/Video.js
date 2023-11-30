@@ -3,9 +3,13 @@ import React from 'react'
 import "./Video.css"
 import { VideoPlayOverlayAnimation } from './VideoPlayOverlayAnimation/VideoPlayOverlayAnimation';
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMutedState, setAudioAvailable, toggleMuted } from '../../Features/ControlBar/ControlBarSlice';
 
 
 export const Video = ({video, id}) => {
+
+    const dispatch = useDispatch();
 
     const [playing, togglePlaying] = React.useState(false);
 
@@ -15,7 +19,9 @@ export const Video = ({video, id}) => {
 
     const [loading, toggleLoading] = React.useState(true);
 
-    const videoVolume = 0.2;
+    const muted = useSelector(selectMutedState);
+
+    const videoVolume = 1;
 
     const handlePlayState = (e) => {
         e.stopPropagation();
@@ -77,13 +83,14 @@ export const Video = ({video, id}) => {
         vid_el.play()
         .catch(e => {return});
         aud_el.play()
-        .catch(e => {return});
+       // .catch(e => {return});
 
         togglePlaying(true);
 
         toggleLoading(false);
 
         toggleInteracted(true);
+        
     }
 
     return (
@@ -95,13 +102,25 @@ export const Video = ({video, id}) => {
             : null}
             <VideoPlayOverlayAnimation color="white" interacted={interacted} playing={playing} />
             <video
+            autoPlay={true}
             playsInline
             onClick={(e) => {e.preventDefault()}}
-            muted={true}
+            muted={muted}
             style={{opacity: loading ? 0 : 1}}
             onCanPlay={onCanPlay}
-            onTimeUpdate={handleProgress} controls={false} crossOrigin='anonymous' id={video + id} src={video} autoPlay={true} loop={true} />
-            <audio  hidden={true} muted={false} loop={true} src={video?.includes('v.redd') ? video?.split('_')[0] + '_AUDIO_64.mp4' : video} autoPlay={true} id={video + 'audio'} />
+            onTimeUpdate={handleProgress} controls={false} crossOrigin='anonymous' id={video + id} src={video} loop={true} />
+            <audio 
+            autoPlay={true}
+            playsInline
+            onError={() => {
+                console.log('no audio')
+                dispatch(setAudioAvailable(false));
+            }}
+            onLoadedData={() => {
+                console.log('audio')
+                dispatch(setAudioAvailable(true));
+            }}
+            hidden={true} muted={muted} loop={true} src={video?.includes('v.redd') ? video?.split('_')[0] + '_AUDIO_64.mp4' : video} id={video + 'audio'} />
             <div 
             onClick={scrub}
              className='video-progress-bar-container'>

@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentSortState } from '../SortOptions/SortOptionsSlice'
 
 import './Feed.css';
-import { fetchFeed, selectFeed, selectFeedLoading} from './FeedSlice';
+import { fetchFeed, selectFeed, selectFeedLoading, selectPage, setPage} from './FeedSlice';
 import { Post } from '../../Components/Post/Post';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LoadingMore } from '../../Components/LoadingMore/LoadingMore';
 
 export const Feed = () => {
 
-    const [[page, direction], setPage] = React.useState([0, 0]);
+    const index = useSelector(selectPage);
+
+    const direction = index[1];
+
+    const page = index[0];
 
     const variants = {
         enter: (direction) => {
@@ -61,7 +65,7 @@ export const Feed = () => {
             if (feed.length - 1 === page) return;
         }
 
-        setPage([page + newDirection, newDirection]);
+        dispatch(setPage([page + newDirection, newDirection]));
 
         
     };
@@ -92,6 +96,7 @@ export const Feed = () => {
                 {feed.length === 0 ?
                 null : 
                 <motion.div
+                style={{height: '100%'}}
                 variants={variants}
                 custom={direction}
                 transition={{

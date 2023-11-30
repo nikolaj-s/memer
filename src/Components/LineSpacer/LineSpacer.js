@@ -2,8 +2,8 @@ import React from 'react'
 
 import "./LineSpacer.css";
 
-export const LineSpacer = () => {
+export const LineSpacer = ({width, margin}) => {
     return (
-        <div className='line-spacer' />
+        <div style={{width: width, margin}} className='line-spacer' />
     )
 }

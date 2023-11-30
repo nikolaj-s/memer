@@ -1,0 +1,27 @@
+
+.category-button {
+    display: flex;
+    justify-content: space-between;
+    width: calc(90% - 10px);
+    align-items: center;
+    height: 35px;
+    padding: 5px;
+}
+
+.category-button svg {
+    width: 35px;
+    height: 35px;
+}
+
+.category-button h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-weight: 300;
+    font-size: 1.2rem;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}

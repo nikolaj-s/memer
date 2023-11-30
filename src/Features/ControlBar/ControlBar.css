@@ -1,0 +1,22 @@
+
+.control-bar-container {
+    position: fixed;
+    left: 5px;
+    bottom: 20%;
+    display: flex;
+    width: 40px;
+    z-index: 10;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-button {
+    padding: 10px 0px;
+    cursor: pointer;
+    opacity: 1;
+    transition: 0.1s;
+}
+
+.control-button path {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.632));
+  }

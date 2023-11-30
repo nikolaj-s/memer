@@ -1,0 +1,37 @@
+
+.divider-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    margin: 50px 10px 0px 10px;
+}
+
+.divider-title svg {
+    flex-shrink: 0;
+}
+
+.divider-title h2 {
+    color: white;
+    font-weight: 400;
+    font-size: 1.3rem;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+.divider-title h2 span {
+    color: var(--red-color);
+}
+
+.divider-title-spacer {
+    height: 3px;
+    background-color: var(--accent-color);
+    width: 100%;
+    display: flex;
+    margin: 0px 10px;
+    border-radius: 3px;
+}
