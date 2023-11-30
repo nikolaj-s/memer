@@ -14,34 +14,50 @@ export const fetchFeed = createAsyncThunk(
 
             let after;
 
+            let new_current;
+
             const {default_sources, current} = getState().FeedSlice;
 
-            let indx = Math.floor((Math.random() * (default_sources.length - 1)));
-
             if (window.location.pathname === '/') {
+                let indx = Math.floor((Math.random() * (default_sources.length - 1)));
+                
                 src = default_sources[indx].src;
 
                 after = default_sources[indx].after;
-            } else {
+            } else if (current.length === 0 && window.location.pathname !== '/') {
 
                 for (const category of categories) {
                     if (category.path === window.location.pathname) {
 
-                        src = category.state;
+                        let arr = category.state.map(i => {return {src: i, after: null}})
+                        console.log(arr)
+                        let indx = Math.floor((Math.random() * (arr.length - 1)));
+
+                        new_current = arr;
+
+                        src = new_current[indx].src;
+
+                        after = new_current[indx].after;
                         
-                        after = current.after;
 
                     }
                 }
 
+            } else if (current.length > 0) {
+
+                let indx = Math.floor((Math.random() * (current.length - 1)));
+
+                src = current[indx].src;
+
+                after = current[indx].after;
             }
-                
+            console.log(src, after)
             const data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
             .then(data => {
 
                 const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.preview && d.selftext.length === 0)
                 
-                return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed};
+                return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current};
             })
             .catch(err => {
                 return rejectWithValue({error: true, errorMessage: err.message})
@@ -60,7 +76,7 @@ const FeedSlice = createSlice({
     name: "FeedSlice",
     initialState: {
         feed: [],
-        current: {},
+        current: [],
         default_sources: [{
             after: false,
             src: 'nsfw'
@@ -89,13 +105,18 @@ const FeedSlice = createSlice({
         muted: true,
         page: [0, 0],
         error: false,
-        errorMessage: ""
+        errorMessage: "",
+        verified_age: false,
+        initialLoad: true
     },
     reducers: {
         setPage: (state, action) => {
             if (action.payload[1] === -1 && state.page[0] === 0) return;
             
             state.page = action.payload;
+        },
+        toggleAgeVerification: (state, action) => {
+            state.verified_age = action.payload;
         }
     },
     extraReducers: {
@@ -107,6 +128,8 @@ const FeedSlice = createSlice({
         [fetchFeed.fulfilled]: (state, action) => {
             state.loading = false;
 
+            state.initialLoad = false;
+
             if (action.payload.newFeed) {
                 state.feed = action.payload.posts
             } else {
@@ -114,13 +137,28 @@ const FeedSlice = createSlice({
             }
             
             if (window.location.pathname === '/') {
+
                 const src_index = state.default_sources.findIndex(e => e.src === action.payload.src);
 
                 state.default_sources[src_index].after = action.payload.after;
-            } else {
-                state.current.after = action.payload.after;
 
-                state.current.state = action.payload.src;
+            } else if (action.payload.new_current && window.location.pathname !== '/') {
+
+                const new_current = action.payload.new_current.map(i => {
+                    if (i.src === action.payload.src) {
+                        return {src: i.src, after: action.payload.src}
+                    } else {
+                        return i;
+                    }
+                })
+
+                state.current = new_current;
+
+            } else if (state.current.length > 0) {
+
+                const src_index = state.current.findIndex(e => e.src === action.payload.src);
+
+                state.current[src_index].after = action.payload.after;
             }
         
         },
@@ -142,6 +180,10 @@ export const selectErrorState = state => state.FeedSlice.error;
 
 export const selectErrorMessage = state => state.FeedSlice.errorMessage;
 
-export const {setPage} = FeedSlice.actions;
+export const selectVerifiedAge = state => state.FeedSlice.verified_age;
+
+export const selectInitialLoading = state => state.FeedSlice.initialLoad;
+
+export const {setPage, toggleAgeVerification} = FeedSlice.actions;
 
 export default FeedSlice.reducer;

@@ -17,8 +17,6 @@ export const ControlBar = () => {
 
     const index = useSelector(selectPage);
 
-    const direction = index[1];
-
     const page = index[0];
 
     const Muted = useSelector(selectMutedState);
@@ -32,7 +30,6 @@ export const ControlBar = () => {
     const handleToggleHdQuality = () => {
         dispatch(toggleHdQuality(!HDQuality));
     }
-    console.log(HDQuality)
     
     const handlePage = (newDirection) => {
         if (feed.length === 0) return;

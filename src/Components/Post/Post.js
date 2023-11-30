@@ -52,6 +52,7 @@ export const Post = ({data}) => {
             setVideo(null);
             setImage(null);
         }
+    // eslint-disable-next-line
     }, [HDQuality])
 
     const handleSource = () => {
@@ -66,7 +67,7 @@ export const Post = ({data}) => {
 
         window.open(link)
     }
-console.log(data)
+
     return (
         <div id={data.id} key={data.id} className='post-container'>
             <div className='post-info-container'>

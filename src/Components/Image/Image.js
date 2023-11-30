@@ -12,7 +12,7 @@ export const Image = ({image}) => {
         {loading ?
         <LoadingCircle />
         : null}
-        <img onLoad={() => {toggleLoading(false)}} style={{opacity: loading ? 0 : 1}} draggable={false} src={image} alt="media image" />
+        <img onLoad={() => {toggleLoading(false)}} style={{opacity: loading ? 0 : 1}} draggable={false} src={image} alt="main media source" />
     </div>
   )
 }

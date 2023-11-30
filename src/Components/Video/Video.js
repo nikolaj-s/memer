@@ -4,8 +4,7 @@ import "./Video.css"
 import { VideoPlayOverlayAnimation } from './VideoPlayOverlayAnimation/VideoPlayOverlayAnimation';
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMutedState, setAudioAvailable, toggleMuted } from '../../Features/ControlBar/ControlBarSlice';
-
+import { selectMutedState, setAudioAvailable } from '../../Features/ControlBar/ControlBarSlice';
 
 export const Video = ({video, id}) => {
 

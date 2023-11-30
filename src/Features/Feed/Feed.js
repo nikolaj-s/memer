@@ -72,8 +72,8 @@ export const Feed = () => {
 
     React.useEffect(() => {
         dispatch(fetchFeed({sort: sortOption, newFeed: true}));
-
-    // eslint-ignore-line
+        
+    // eslint-disable-next-line
     }, [sortOption])
     
     const handleLoadMore = (e) => {
