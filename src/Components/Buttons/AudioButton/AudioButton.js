@@ -1,7 +1,11 @@
 import React from 'react';
 import {motion} from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { selectAudioAvailableState } from '../../../Features/ControlBar/ControlBarSlice';
 
-export const AudioButton = ({action, state, audio_available}) => {
+export const AudioButton = ({action, state}) => {
+  
+  const audioAvailable = useSelector(selectAudioAvailableState);
 
   return (
     <motion.div 
@@ -9,7 +13,7 @@ export const AudioButton = ({action, state, audio_available}) => {
     transition={{duration: 0.1}}
     whileTap={{scale: 1.3}}
     whileHover={{opacity: .6}}
-    style={{opacity: audio_available ? 1 : 0.4}}
+    style={{opacity: audioAvailable ? 1 : 0.4}}
     onClick={action} className='control-button'>
         {state ?
         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

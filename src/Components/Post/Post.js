@@ -3,11 +3,13 @@ import React from 'react'
 import "./Post.css";
 import { Video } from '../Video/Video';
 import { Image } from '../Image/Image';
-import { useSelector } from 'react-redux';
-import { selectHDState } from '../../Features/ControlBar/ControlBarSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectHDState, setAudioAvailable } from '../../Features/ControlBar/ControlBarSlice';
 import {motion} from 'framer-motion';
 
 export const Post = ({data}) => {
+
+    const dispatch = useDispatch();
     
     const [video, setVideo] = React.useState(null);
 
@@ -40,6 +42,8 @@ export const Post = ({data}) => {
             if (img) {
                 img_quality = data.url + '?width=121';
             }
+
+            dispatch(setAudioAvailable(false));
         }
 
         setTimeout(() => {
