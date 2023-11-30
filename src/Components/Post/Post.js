@@ -71,7 +71,7 @@ export const Post = ({data}) => {
 
         window.open(link)
     }
-
+    
     return (
         <div id={data.id} key={data.id} className='post-container'>
             <div className='post-info-container'>

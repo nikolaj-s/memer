@@ -173,6 +173,7 @@ const FeedSlice = createSlice({
         },
         [fetchFeed.rejected]: (state, action) => {
             state.loading = false;
+            state.initialLoad = false;
             state.error = true;
             state.errorMessage = action.payload.errorMessage;
         }
