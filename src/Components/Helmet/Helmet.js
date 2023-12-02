@@ -13,7 +13,9 @@ export const MetaTags = ({data = {}, image}) => {
         <meta name='og:title' content={"XQuicky" + data?.title ? `: ${data.title}` : null} />
         <meta property='twitter:image' name='twitter:image' content={image || "https://res.cloudinary.com/drlkgoter/image/upload/v1701370801/Screenshot_2023-11-30_110002_khmrdt.png"} />
         <meta name='twiiter:title' content={"XQuicky" + data?.title ? `: ${data.title}` : null} />
-        
+        <meta name="description" content={data?.title} />
+        <meta name="og:description" content={data?.title} />
+        <meta name="twitter:description" content={data?.title} />
     </Helmet> 
     )
 }
