@@ -31,7 +31,7 @@ function App() {
 
     return (
       <div  className="App">
-          <MetaTags />
+          {window.location.pathname === '/' ? <MetaTags /> : null}
           <NavigationBar />
           <div className='application-wrapper'>
             <ControlBar />
