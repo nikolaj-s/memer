@@ -15,9 +15,7 @@ export const ControlBar = () => {
 
     const HDQuality = useSelector(selectHDState);
 
-    const index = useSelector(selectPage);
-
-    const page = index[0];
+    const page = useSelector(selectPage);
 
     const Muted = useSelector(selectMutedState);
 

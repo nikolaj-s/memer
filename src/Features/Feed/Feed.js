@@ -90,6 +90,17 @@ export const Feed = () => {
 
     React.useEffect(() => {
 
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (feed[page]?.id !== urlParams.get('post')) {
+            setVideo(null)
+
+            setAudio("");
+
+            setImage(null);
+
+        }
+
         let vid;
 
         let img;
@@ -105,8 +116,7 @@ export const Feed = () => {
         if (!data) return;
 
         if (data?.id) {
-            const urlParams = new URLSearchParams(window.location.search);
-
+            
             urlParams.set('post', data.id);
 
             let new_url = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + urlParams.toString();
@@ -139,36 +149,51 @@ export const Feed = () => {
             setVideo(quality_link);
 
             setImage(img_quality||img);
-        })
+        }, 250)
 
-        return () => {
-            setVideo(null);
-            setImage(null);
-            setAudio(null);
-        }
     // eslint-disable-next-line
     }, [page, feed, HDQuality])
     
     const handleLoadMore = (e) => {
+       
+        if (Date.now() - time <= 210) return;
 
-        if (Date.now() - time < 300) return;
-
-        if (e.deltaY === 100) {
+        if (e.deltaY >= 1) {
             
             paginate(1)
-        } else {
-            if (page === 0) return;
+        } else if (e.deltaY <= -1) {
+            if (page <= 0) return;
             paginate(-1)
         }
 
         setTime(Date.now());
     }
+
+    const handleArrowKeyInput = (e) => {
+ 
+        if (e.keyCode === 40) {
+            paginate(1)
+        } else if (e.keyCode === 38) {
+            paginate(-1)
+        }
+    }
+
+    React.useEffect(() => {
+
+        window.addEventListener('keyup', handleArrowKeyInput);
+
+        return () => {
+            window.removeEventListener('keyup', handleArrowKeyInput);
+        }
+
+    }, [feed, page])
+    
     return (
         <>
         <MetaTags image={image} data={feed[page]} />
         <div onWheel={handleLoadMore} className='feed'>
             <div className='inner-feed-wrapper'>
-                <AnimatePresence custom={direction} initial={false} mode='popLayout'>
+                <AnimatePresence custom={direction} initial={false} mode='wait'>
                 {feed.length === 0 ?
                 null : 
                 <motion.div
@@ -184,7 +209,7 @@ export const Feed = () => {
                 drag="y"
                 initial="enter"
                 animate="center"
-                key={page}
+                key={feed[page]?.id}
                 onDragEnd={(e, { offset, velocity }) => {
                 const swipe = swipePower(offset.y, velocity.y);
     
@@ -195,7 +220,7 @@ export const Feed = () => {
                 }
                 }}
                 >
-                    <Post data={feed[page]} video={video} image={image} />
+                    <Post key={feed[page]?.id} data={feed[page]} video={video} image={image} />
                 </motion.div>
                 }
                 </AnimatePresence>

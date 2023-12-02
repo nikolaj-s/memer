@@ -30,6 +30,7 @@ export const LoadSplashScreen = () => {
             initial={{scale: 4}}
             animate={{scale: 1}}
             exit={{opacity: 0}}
+            transition={{duration: 0.3}}
             className='load-splash-screen-container'>
                 <h1><span>X</span>Q</h1>
                 {!ageVerified && !initLoading ?

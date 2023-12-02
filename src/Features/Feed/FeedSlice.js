@@ -81,15 +81,19 @@ export const fetchFeed = createAsyncThunk(
             if (current.length === 0 && window.location.pathname !== '/' && !exists) {
 
                 const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
-                    return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18)[0]
+                    return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18);
+                }).catch(e => {
+                    return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
                 })
                 
-                new_current = [{src: category.display_name, after: false}]
-
-                src = category.display_name;
+                new_current = category.slice(0, 6).map(d => {return {src: d.display_name, after: false}});
+             
+                let indx = Math.floor((Math.random() * (new_current.length)))
+               
+                src = new_current[indx].src;
 
             }
-
+           
             const data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
             .then(data => {
 

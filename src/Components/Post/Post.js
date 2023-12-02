@@ -30,8 +30,10 @@ export const Post = ({data, image, video}) => {
                 </div>
                 {video ? 
                 <Video id={data.id} video={video} /> 
-                :
-                <Image image={image} />}
+                : image ?
+                <Image image={image} /> :
+                null
+                }
                 <motion.img draggable={false} className='back-drop-post-blur' alt='back-drop-blur-effect' src={data.thumbnail} />
                 
             </div> 
