@@ -9,6 +9,7 @@ import { CategoryButton } from '../../Components/Buttons/CategoryButton/Category
 import { Categories } from '../../Util/Categories';
 import { LineSpacer } from '../../Components/LineSpacer/LineSpacer';
 import { SearchInput } from '../../Components/SearchInput/SearchInput';
+import { CobyIcon } from '../../Components/Icons/CobyIcon';
 
 export const Menu = () => {
 
@@ -29,10 +30,11 @@ export const Menu = () => {
         className='menu-container'>
             <SearchInput />
             <DividerTitle name={'Categories'} />
-            <CategoryButton name={categories[0].name} icon={categories[0].icon} />
+            <CategoryButton name={categories[0].name} icon={categories[0].icon} path={"/"} />
+            <CategoryButton name={categories[1].name} icon={<CobyIcon />} path={categories[1].path} />
             <LineSpacer width={'90%'} margin={"15px 0px"} />
             {categories.map((cat, key) => {
-                return key === 0 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
+                return key === 0 || key === 1 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
             })}
             <div style={{height: 80, flexShrink: 0}} />
         </motion.div>
