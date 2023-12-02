@@ -10,6 +10,8 @@ import { LoadingMore } from '../../Components/LoadingMore/LoadingMore';
 
 export const Feed = () => {
 
+    const [time,setTime] = React.useState(Date.now());
+
     const index = useSelector(selectPage);
 
     const direction = index[1];
@@ -78,6 +80,8 @@ export const Feed = () => {
     
     const handleLoadMore = (e) => {
 
+        if (Date.now() - time < 300) return;
+
         if (e.deltaY === 100) {
             
             paginate(1)
@@ -86,7 +90,7 @@ export const Feed = () => {
             paginate(-1)
         }
 
-        
+        setTime(Date.now());
     }
 
     return (

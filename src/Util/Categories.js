@@ -9,7 +9,7 @@ export const Categories = [
     {
         name: "Coby's Prime Time",
         path: "/cobys-prime-time",
-        state: ['suicidegirls', 'SuicideGirlsAssholes', 'feetpics']
+        state: ['suicidegirls', 'feetpics']
     },
     {
         name: "Anal",
