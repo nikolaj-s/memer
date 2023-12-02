@@ -11,6 +11,7 @@ import React from 'react';
 import { fetchLocalData } from './Util/LocalData';
 import { useDispatch } from 'react-redux';
 import { toggleAgeVerification } from './Features/Feed/FeedSlice';
+import { Helmet } from 'react-helmet';
 
 function App() {
 
@@ -30,6 +31,10 @@ function App() {
 
     return (
       <div  className="App">
+        <Helmet>
+          <meta name='og:link' content={window.location.href} />
+          <meta name='twitter:link' content={window.location.href} />
+        </Helmet>
           <NavigationBar />
           <div className='application-wrapper'>
             <ControlBar />

@@ -92,8 +92,10 @@ export const Post = ({data}) => {
                 <title>XQuicky: {data.title}</title>
                 <link rel='canonical' href={window.location.href} />
                 <meta name='og:image' content={data.thumbnail} />
+                <meta name='og:title' content={"XQuicky: " + data.title} />
                 <meta name='twitter:image' content={data.thumbnail} />
-                <meta name='twiiter:title' content={"X Quicky: " + data.title} />
+                <meta name='twiiter:title' content={"XQuicky: " + data.title} />
+                
             </Helmet> 
             : null}
             <div id={data.id} key={data.id} className='post-container'>
