@@ -10,6 +10,7 @@ const ControlBarSlice = createSlice({
     },
     reducers: {
         setAudioAvailable: (state, action) => {
+            console.log(action.payload)
             state.audio_available = action.payload;
         },
         toggleMuted: (state, action) => {

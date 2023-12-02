@@ -86,6 +86,10 @@ export const Video = ({video, id}) => {
         aud_el.play()
        // .catch(e => {return});
 
+       vid_el.currentTime = 0;
+
+       aud_el.currentTime = 0;
+
         togglePlaying(true);
 
         toggleLoading(false);
@@ -110,7 +114,7 @@ export const Video = ({video, id}) => {
             onClick={(e) => {e.preventDefault()}}
             muted={muted}
             style={{opacity: loading || error ? 0 : 1}}
-            onCanPlay={onCanPlay}
+            onLoadedData={onCanPlay}
             onTimeUpdate={handleProgress} controls={false} crossOrigin='anonymous' id={video + id} src={video} loop={true} />
             
             <div 

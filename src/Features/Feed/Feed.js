@@ -7,7 +7,7 @@ import { fetchFeed, selectDirection, selectFeed, selectFeedLoading, selectPage, 
 import { Post } from '../../Components/Post/Post';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LoadingMore } from '../../Components/LoadingMore/LoadingMore';
-import { selectHDState, setAudioAvailable } from '../ControlBar/ControlBarSlice';
+import { selectHDState} from '../ControlBar/ControlBarSlice';
 import { Audio } from '../../Components/Audio/Audio';
 import { MetaTags } from '../../Components/Helmet/Helmet';
 
@@ -133,7 +133,6 @@ export const Feed = () => {
                 img_quality = data.url + '?width=121';
             }
 
-            dispatch(setAudioAvailable(false));
         }
 
         setTimeout(() => {
@@ -146,7 +145,6 @@ export const Feed = () => {
             setVideo(null);
             setImage(null);
             setAudio(null);
-            dispatch(setAudioAvailable(false));
         }
     // eslint-disable-next-line
     }, [page, feed, HDQuality])
