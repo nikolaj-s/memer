@@ -7,7 +7,7 @@ const categories = Categories;
 
 export const fetchFeed = createAsyncThunk(
     'FeedSlice/fetchFeed',
-    async ({sort, newFeed}, {rejectWithValue, getState}) => {
+    async ({sort, newFeed}, {rejectWithValue, getState, dispatch}) => {
         try {
 
             let src;
@@ -37,6 +37,10 @@ export const fetchFeed = createAsyncThunk(
                 })
 
                 first_post = post;
+            }
+
+            if (first_post) {
+                dispatch(setInitPost(first_post))
             }
 
             if (window.location.pathname === '/') {
@@ -90,10 +94,6 @@ export const fetchFeed = createAsyncThunk(
             .then(data => {
 
                 const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.preview && d.selftext.length === 0)
-
-                if (first_post) {
-                    posts.unshift(first_post);
-                }
 
                 return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current};
             })
@@ -150,7 +150,8 @@ const FeedSlice = createSlice({
         loading: false,
         currentPosition: 0,
         muted: true,
-        page: [0, 0],
+        page: 0,
+        direction: 0,
         error: false,
         errorMessage: "",
         verified_age: false,
@@ -160,10 +161,16 @@ const FeedSlice = createSlice({
         setPage: (state, action) => {
             if (action.payload[1] === -1 && state.page[0] === 0) return;
             
-            state.page = action.payload;
+            state.page = action.payload[0];
+
+            state.direction = action.payload[1];
         },
         toggleAgeVerification: (state, action) => {
             state.verified_age = action.payload;
+        },
+        setInitPost: (state, action) => {
+            state.initialLoad = false;
+            state.feed = [action.payload];
         }
     },
     extraReducers: {
@@ -177,11 +184,7 @@ const FeedSlice = createSlice({
 
             state.initialLoad = false;
 
-            if (action.payload.newFeed) {
-                state.feed = action.payload.posts
-            } else {
-                state.feed = [...state.feed, ...action.payload.posts]
-            }
+            state.feed = [...state.feed, ...action.payload.posts]
             
             if (window.location.pathname === '/') {
 
@@ -232,6 +235,8 @@ export const selectVerifiedAge = state => state.FeedSlice.verified_age;
 
 export const selectInitialLoading = state => state.FeedSlice.initialLoad;
 
-export const {setPage, toggleAgeVerification} = FeedSlice.actions;
+export const selectDirection = state => state.FeedSlice.direction;
+
+export const {setPage, toggleAgeVerification, setInitPost} = FeedSlice.actions;
 
 export default FeedSlice.reducer;
