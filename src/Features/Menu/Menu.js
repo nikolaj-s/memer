@@ -8,6 +8,7 @@ import { DividerTitle } from '../../Components/DividerTitle/DividerTitle';
 import { CategoryButton } from '../../Components/Buttons/CategoryButton/CategoryButton';
 import { Categories } from '../../Util/Categories';
 import { LineSpacer } from '../../Components/LineSpacer/LineSpacer';
+import { SearchInput } from '../../Components/SearchInput/SearchInput';
 
 export const Menu = () => {
 
@@ -26,6 +27,7 @@ export const Menu = () => {
         exit={{translateX: '100%'}}
         key={'menu-wrapper'}
         className='menu-container'>
+            <SearchInput />
             <DividerTitle name={'Categories'} />
             <CategoryButton name={categories[0].name} icon={categories[0].icon} />
             <LineSpacer width={'90%'} margin={"15px 0px"} />

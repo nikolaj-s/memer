@@ -1,0 +1,42 @@
+
+.search-input-container {
+    height: 50px;
+    flex-shrink: 0;
+    width: calc(100%);
+    margin-top: 50px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: var(--accent-color);
+}
+
+.search-input-container svg {
+    position: absolute;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.search-input-container svg:hover {
+    opacity: 1;
+}
+
+
+
+.search-input-container input {
+    height: calc(100% - 10px);
+    width: calc(100% - 14px);
+    background-color: transparent;
+    border: none;
+    font-size: 1.4rem;
+    color: white;
+    padding: 5px;
+    font-family: var(--font-family);
+}
+
+.search-input-container input:focus {
+    outline: solid 1px red;
+}

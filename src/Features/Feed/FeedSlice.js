@@ -16,7 +16,28 @@ export const fetchFeed = createAsyncThunk(
 
             let new_current;
 
+            let exists;
+
+            const urlParams = new URLSearchParams(window.location.search);
+
             const {default_sources, current} = getState().FeedSlice;
+
+            const post_id = urlParams.get('post');
+            
+            let first_post;
+
+            if (post_id && newFeed) {
+                const post = await Axios.get(`https://www.reddit.com/comments/${post_id}/.json`).then(res => {
+                    try {
+                        return res.data[0].data.children[0].data;
+                    } catch (e) {
+                        return null;
+                    } 
+                    
+                })
+
+                first_post = post;
+            }
 
             if (window.location.pathname === '/') {
                 let indx = Math.floor((Math.random() * (default_sources.length)));
@@ -39,7 +60,8 @@ export const fetchFeed = createAsyncThunk(
 
                         after = new_current[indx].after;
                         
-
+                        exists = true;
+                        break;
                     }
                 }
 
@@ -51,12 +73,28 @@ export const fetchFeed = createAsyncThunk(
 
                 after = current[indx].after;
             }
-            console.log(src, after)
+            
+            if (current.length === 0 && window.location.pathname !== '/' && !exists) {
+
+                const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
+                    return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18)[0]
+                })
+                
+                new_current = [{src: category.display_name, after: false}]
+
+                src = category.display_name;
+
+            }
+
             const data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
             .then(data => {
 
                 const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.preview && d.selftext.length === 0)
-                
+
+                if (first_post) {
+                    posts.unshift(first_post);
+                }
+
                 return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current};
             })
             .catch(err => {

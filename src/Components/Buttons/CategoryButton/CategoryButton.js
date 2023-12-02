@@ -9,7 +9,9 @@ export const CategoryButton = ({name, state, action, icon, path = "/"}) => {
     const navigate = () => {
         if (path === window.location.pathname) return;
 
-        window.location.pathname = path;
+        let new_url = window.location.protocol + '//' + window.location.host + path;
+
+        window.location.href = new_url;
     }
 
     return (
