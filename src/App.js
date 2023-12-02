@@ -11,7 +11,6 @@ import React from 'react';
 import { fetchLocalData } from './Util/LocalData';
 import { useDispatch } from 'react-redux';
 import { toggleAgeVerification } from './Features/Feed/FeedSlice';
-import { MetaTags } from './Components/Metatags/MetaTags';
 
 function App() {
 
@@ -31,7 +30,6 @@ function App() {
 
     return (
       <div  className="App">
-          {window.location.pathname === '/' ? <MetaTags /> : null}
           <NavigationBar />
           <div className='application-wrapper'>
             <ControlBar />
