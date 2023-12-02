@@ -86,7 +86,7 @@ export const fetchFeed = createAsyncThunk(
                     return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
                 })
                 
-                new_current = category.slice(0, 6).map(d => {return {src: d.display_name, after: false}});
+                new_current = category.slice(0, 2).map(d => {return {src: d.display_name, after: false}});
              
                 let indx = Math.floor((Math.random() * (new_current.length)))
                
