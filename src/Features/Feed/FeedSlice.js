@@ -18,6 +18,8 @@ export const fetchFeed = createAsyncThunk(
 
             let exists;
 
+            let custom_search;
+
             const urlParams = new URLSearchParams(window.location.search);
 
             const {default_sources, current} = getState().FeedSlice;
@@ -76,34 +78,54 @@ export const fetchFeed = createAsyncThunk(
                 src = current[indx].src;
 
                 after = current[indx].after;
+
+                custom_search = current[indx].custom_search;
             }
             
             if (current.length === 0 && window.location.pathname !== '/' && !exists) {
 
-                const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
-                    return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18);
-                }).catch(e => {
-                    return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
-                })
+                // const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
+                //     return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18);
+                // }).catch(e => {
+                //     return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
+                // })
                 
-                new_current = category.slice(0, 2).map(d => {return {src: d.display_name, after: false}});
+                new_current = [{src: window.location.pathname.split('/')[1], after: false, custom_search: true}];
              
                 let indx = Math.floor((Math.random() * (new_current.length)))
                
                 src = new_current[indx].src;
 
+                custom_search = true
             }
            
-            const data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
-            .then(data => {
+            let data;
+            if (custom_search) {
+               data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&include_over_18=on&sort=hot${after ? `&after=${after}` : ''}`)
+                .then(data => {
+    
+                    const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.over_18 && d.post_hint !== 'link')
+                    
+                    if (posts.length === 0) return rejectWithValue({error: true, errorMessage: "404 No Results"}); 
 
-                const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => d.preview && d.selftext.length === 0)
-
-                return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current};
-            })
-            .catch(err => {
-                return rejectWithValue({error: true, errorMessage: err.message})
-            });
+                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
+                })
+                .catch(err => {
+                    return rejectWithValue({error: true, errorMessage: err.message})
+                });
+            } else {
+                data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
+                .then(data => {
+    
+                    const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0)
+    
+                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
+                })
+                .catch(err => {
+                    return rejectWithValue({error: true, errorMessage: err.message})
+                });
+            }
+            
             console.log(data)
             return data;
 
@@ -200,7 +222,7 @@ const FeedSlice = createSlice({
 
                 const new_current = action.payload.new_current.map(i => {
                     if (i.src === action.payload.src) {
-                        return {src: i.src, after: action.payload.after}
+                        return {src: i.src, after: action.payload.after, custom_search: action.payload.custom_search}
                     } else {
                         return i;
                     }

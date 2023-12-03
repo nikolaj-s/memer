@@ -21,6 +21,8 @@ export const Feed = () => {
 
     const [image, setImage] = React.useState(null);
 
+    const [gallery, setGallery] = React.useState(null);
+
     const HDQuality = useSelector(selectHDState);
 
     const page = useSelector(selectPage);
@@ -99,6 +101,8 @@ export const Feed = () => {
 
             setImage(null);
 
+            setGallery(null);
+
         }
 
         let vid;
@@ -125,9 +129,9 @@ export const Feed = () => {
         }
             
 
-        if (data?.url?.includes('.gifv') || data?.url?.includes('.mp4') || (data?.url?.includes('redgifs') && !data?.url?.includes('.jpg')) || data?.url?.includes('gfycat') || data.media?.reddit_video) {
+        if (data?.url?.includes('.gifv') || data?.url?.includes('.mp4') || (data?.url?.includes('redgifs') && !data?.url?.includes('.jpg')) || data?.url?.includes('gfycat') || data.media?.reddit_video || data?.media?.secure_media?.reddit_video) {
 
-            vid = data.preview?.reddit_video_preview?.fallback_url || data.media?.reddit_video?.fallback_url;
+            vid = data.preview?.reddit_video_preview?.fallback_url || data.media?.reddit_video?.fallback_url || data.secure_media?.reddit_video?.fallback_url;
             
             if (vid) {
                 quality_link = HDQuality ? vid : vid.split("DASH_")[0] + 'DASH_270.mp4'
@@ -135,6 +139,12 @@ export const Feed = () => {
 
             setAudio(vid?.split('_')[0] + '_AUDIO_64.mp4');
             
+        } else if (data.gallery_data) {
+
+            let gallery_arr = data.gallery_data?.items?.map(i => `https://i.redd.it/${i.media_id}.jpg`)
+            
+            setGallery(gallery_arr);
+
         } else {
 
             img = data.url;
@@ -185,12 +195,12 @@ export const Feed = () => {
         return () => {
             window.removeEventListener('keyup', handleArrowKeyInput);
         }
-
+    // eslint-disable-next-line
     }, [feed, page])
     
     return (
         <>
-        <MetaTags image={image} data={feed[page]} />
+        <MetaTags image={image || (gallery ? gallery[0] : null)} data={feed[page]} />
         <div onWheel={handleLoadMore} className='feed'>
             <div className='inner-feed-wrapper'>
                 <AnimatePresence custom={direction} initial={false} mode='wait'>
@@ -205,7 +215,7 @@ export const Feed = () => {
                     opacity: { duration: 0.2 }
                   }}
                 dragConstraints={{top: 0, bottom: 0 }}  
-                dragElastic={1}
+                dragElastic={0.5}
                 drag="y"
                 initial="enter"
                 animate="center"
@@ -220,7 +230,7 @@ export const Feed = () => {
                 }
                 }}
                 >
-                    <Post key={feed[page]?.id} data={feed[page]} video={video} image={image} />
+                    <Post gallery={gallery} key={feed[page]?.id} data={feed[page]} video={video} image={image} />
                 </motion.div>
                 }
                 </AnimatePresence>

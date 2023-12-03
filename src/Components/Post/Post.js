@@ -4,8 +4,9 @@ import "./Post.css";
 import { Video } from '../Video/Video';
 import { Image } from '../Image/Image';
 import {motion} from 'framer-motion';
+import {Gallery} from '../Gallery/Gallery';
 
-export const Post = ({data, image, video}) => {
+export const Post = ({data, image, video, gallery}) => {
 
     const handleSource = () => {
         let link;
@@ -19,7 +20,7 @@ export const Post = ({data, image, video}) => {
 
         window.open(link)
     }
-    
+console.log(data)
     return (
         <>
             {data?.id ?
@@ -30,7 +31,9 @@ export const Post = ({data, image, video}) => {
                 </div>
                 {video ? 
                 <Video id={data.id} video={video} /> 
-                : image ?
+                : gallery ?
+                <Gallery images={gallery} /> :
+                image ?
                 <Image image={image} /> :
                 null
                 }

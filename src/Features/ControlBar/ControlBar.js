@@ -56,7 +56,7 @@ export const ControlBar = () => {
             <ArrowButton action={() => {handlePage(-1)}} />
             <AudioButton action={handleToggleAudio} state={Muted} not_available={audioAvailable} />
             <HDButton action={handleToggleHdQuality} state={HDQuality} />
-            <ArrowButton action={() => {handlePage(1)}} flip={true} />
+            <ArrowButton action={() => {handlePage(1)}} flip={'180deg'} />
         </div>
     )
 }
