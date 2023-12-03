@@ -9,7 +9,6 @@ export const Gallery = ({images = []}) => {
 
     const [[page, direction], setPage] = React.useState([0, 0]);
     
-
     const variants = {
         enter: (direction) => {
           return {
@@ -43,6 +42,25 @@ export const Gallery = ({images = []}) => {
         setPage([page + newDirection, newDirection]);
     };
 
+    const handleKey = (e) => {
+        if (e.keyCode === 39) {
+            paginate(1)
+        } else if (e.keyCode === 37) {
+            paginate(-1)
+        }
+    }
+
+    React.useEffect(() => {
+
+        window.addEventListener('keyup', handleKey);
+
+        return () => {
+            window.removeEventListener('keyup', handleKey);
+        }
+
+    // eslint-disable-next-line
+    }, [page, images])
+
     return (
         <div className='gallery-container'>
             <AnimatePresence initial={false} custom={direction} mode='popLayout'>
@@ -71,6 +89,12 @@ export const Gallery = ({images = []}) => {
                 }}
                 >
                     <Image key={page} image={images[imageIndex]} objectFit='cover' />
+                    <div onClick={() => {paginate(-1)}} className='left-gallery-control'>
+                     
+                    </div>
+                    <div onClick={() => {paginate(1)}} className='right-gallery-control'>
+                       
+                    </div>
                 </motion.div>
             </AnimatePresence>
             

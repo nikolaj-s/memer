@@ -13,6 +13,12 @@
     background-color: var(--main-bg-color);
 }
 
+.load-splash-screen-container p {
+    color: white;
+    text-align: center;
+    max-width: 90%;
+}
+
 .load-splash-screen-container h1 {
     font-size: 4rem;
     margin: 0;

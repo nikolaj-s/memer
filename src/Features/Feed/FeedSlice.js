@@ -36,7 +36,7 @@ export const fetchFeed = createAsyncThunk(
                         return null;
                     } 
                     
-                })
+                }).catch(e => {return null})
 
                 first_post = post;
             }
@@ -73,26 +73,41 @@ export const fetchFeed = createAsyncThunk(
 
             } else if (current.length > 0) {
 
-                let indx = Math.floor((Math.random() * (current.length)));
+                let custom_exists = current.findIndex(d => d.custom_search);
 
-                src = current[indx].src;
+                if (custom_exists !== -1) {
+                    src = current[custom_exists].src;
 
-                after = current[indx].after;
+                    after = current[custom_exists].after;
 
-                custom_search = current[indx].custom_search;
+                    custom_search = current[custom_exists].custom_search;
+
+                } else {
+                    let indx = Math.floor((Math.random() * (current.length)));
+
+                    src = current[indx].src;
+    
+                    after = current[indx].after;
+    
+                    custom_search = current[indx].custom_search;
+                }
+
+                
             }
+
+            console.log(current)
             
             if (current.length === 0 && window.location.pathname !== '/' && !exists) {
 
-                // const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
-                //     return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18);
-                // }).catch(e => {
-                //     return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
-                // })
+                const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
+                    return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18);
+                }).catch(e => {
+                    return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
+                })
                 
-                new_current = [{src: window.location.pathname.split('/')[1], after: false, custom_search: true}];
+                new_current = [{src: window.location.pathname.split('/')[1], after: false, custom_search: true}, ...category.slice(0, 2).map(d => {return {src: d.display_name, after: false}})];
              
-                let indx = Math.floor((Math.random() * (new_current.length)))
+                let indx = 0;
                
                 src = new_current[indx].src;
 
@@ -106,11 +121,12 @@ export const fetchFeed = createAsyncThunk(
     
                     const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.over_18 && d.post_hint !== 'link')
                     
-                    if (posts.length === 0) return rejectWithValue({error: true, errorMessage: "404 No Results"}); 
+                    if (posts.length === 0 && new_current?.length === 1) return rejectWithValue({error: true, errorMessage: "404 No Results"}); 
 
-                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
+                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search, no_more_results: posts.length <= 3};
                 })
                 .catch(err => {
+                    console.log(err);
                     return rejectWithValue({error: true, errorMessage: err.message})
                 });
             } else {
@@ -122,6 +138,7 @@ export const fetchFeed = createAsyncThunk(
                     return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
                 })
                 .catch(err => {
+                    console.log(err);
                     return rejectWithValue({error: true, errorMessage: err.message})
                 });
             }
@@ -220,21 +237,36 @@ const FeedSlice = createSlice({
 
             } else if (action.payload.new_current && window.location.pathname !== '/') {
 
-                const new_current = action.payload.new_current.map(i => {
+                let new_current = action.payload.new_current.map(i => {
+
                     if (i.src === action.payload.src) {
                         return {src: i.src, after: action.payload.after, custom_search: action.payload.custom_search}
                     } else {
                         return i;
                     }
+                
                 })
+
+                if (action.payload.no_more_results) {
+                    new_current = new_current.filter(d => !d.custom_search);
+                }
 
                 state.current = new_current;
 
             } else if (state.current.length > 0) {
 
-                const src_index = state.current.findIndex(e => e.src === action.payload.src);
+                if (action.payload.no_more_results) {
 
-                state.current[src_index].after = action.payload.after;
+                    state.current = state.current.filter(d => d.src !== action.payload.src);
+
+                } else {
+
+                    const src_index = state.current.findIndex(e => e.src === action.payload.src);
+
+                    state.current[src_index].after = action.payload.after;
+
+                }
+
             }
         
         },

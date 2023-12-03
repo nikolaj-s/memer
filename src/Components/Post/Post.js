@@ -1,10 +1,11 @@
 import React from 'react'
 
-import "./Post.css";
 import { Video } from '../Video/Video';
 import { Image } from '../Image/Image';
 import {motion} from 'framer-motion';
 import {Gallery} from '../Gallery/Gallery';
+
+import "./Post.css";
 
 export const Post = ({data, image, video, gallery}) => {
 
@@ -20,7 +21,7 @@ export const Post = ({data, image, video, gallery}) => {
 
         window.open(link)
     }
-console.log(data)
+
     return (
         <>
             {data?.id ?
@@ -31,7 +32,7 @@ console.log(data)
                 </div>
                 {video ? 
                 <Video id={data.id} video={video} /> 
-                : gallery ?
+                : gallery.length > 0 ?
                 <Gallery images={gallery} /> :
                 image ?
                 <Image image={image} /> :

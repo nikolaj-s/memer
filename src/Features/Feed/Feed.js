@@ -21,7 +21,7 @@ export const Feed = () => {
 
     const [image, setImage] = React.useState(null);
 
-    const [gallery, setGallery] = React.useState(null);
+    const [gallery, setGallery] = React.useState([]);
 
     const HDQuality = useSelector(selectHDState);
 
@@ -71,7 +71,7 @@ export const Feed = () => {
         if (newDirection === -1 && page === 0) return;
 
         if (newDirection === 1) {
-            if (feed.length - 5 === page) {
+            if (feed.length - 5 <= page) {
                 dispatch(fetchFeed({sort: sortOption}))
             }
 
@@ -101,7 +101,7 @@ export const Feed = () => {
 
             setImage(null);
 
-            setGallery(null);
+            setGallery([]);
 
         }
 
@@ -110,8 +110,6 @@ export const Feed = () => {
         let img;
         
         let quality_link;
-
-        let img_quality;
 
         if (feed.length === 0) return;
 
@@ -143,22 +141,19 @@ export const Feed = () => {
 
             let gallery_arr = data.gallery_data?.items?.map(i => `https://i.redd.it/${i.media_id}.jpg`)
             
+            img = gallery_arr[0];
+
             setGallery(gallery_arr);
 
         } else {
 
             img = data.url;
-            
-            if (img) {
-                img_quality = data.url + '?width=121';
-            }
-
         }
 
         setTimeout(() => {
             setVideo(quality_link);
 
-            setImage(img_quality||img);
+            setImage(img);
         }, 250)
 
     // eslint-disable-next-line
@@ -197,10 +192,10 @@ export const Feed = () => {
         }
     // eslint-disable-next-line
     }, [feed, page])
-    
+ 
     return (
         <>
-        <MetaTags image={image || (gallery ? gallery[0] : null)} data={feed[page]} />
+        <MetaTags image={image} data={feed[page]} />
         <div onWheel={handleLoadMore} className='feed'>
             <div className='inner-feed-wrapper'>
                 <AnimatePresence custom={direction} initial={false} mode='wait'>

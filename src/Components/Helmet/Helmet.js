@@ -16,7 +16,7 @@ export const MetaTags = ({data = {}, image}) => {
         <meta charSet='utf-8' />
         <title>{data?.title ? `XQuicky: ${data.title}` : 'XQuicky'}</title>
         <link rel='canonical' href={window.location.href} />
-        <meta property='og:image' name='og:image' content={data.url || img} />
+        <meta property='og:image' name='og:image' content={image || img} />
         <meta name='og:title' content={data?.title ? `XQuicky: ${data.title}` : title} />
         <meta property='twitter:image' name='twitter:image' content={image || img} />
         <meta name='twiiter:title' content={data?.title ? `XQuicky: ${data.title}` : title} />

@@ -9,7 +9,6 @@ import { MediaError } from '../MediaError/MediaError';
 
 export const Video = ({video, id}) => {
 
-
     const [playing, togglePlaying] = React.useState(false);
 
     const [interacted, toggleInteracted] = React.useState(true);
@@ -26,6 +25,7 @@ export const Video = ({video, id}) => {
 
     const handlePlayState = (e) => {
         e.stopPropagation();
+
         e.preventDefault();
         
         let vid_el = document.getElementById(video + id)
@@ -70,7 +70,7 @@ export const Video = ({video, id}) => {
     }
     
     const onCanPlay = () => {
-        console.log('playing')
+        
         let aud_el = document.getElementById(video + id)
 
         let vid_el = document.getElementById('audio-source')

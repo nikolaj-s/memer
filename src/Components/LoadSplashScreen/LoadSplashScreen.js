@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectInitialLoading, selectVerifiedAge, toggleAgeVerification } from '../../Features/Feed/FeedSlice'
+import { Hints } from '../../Util/Hints'
 import { setLocalData } from '../../Util/LocalData'
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle'
 
@@ -10,6 +11,8 @@ import "./LoadSplashScreen.css";
 export const LoadSplashScreen = () => {
 
     const dispatch = useDispatch();
+
+    const hints = Hints;
 
     const ageVerified = useSelector(selectVerifiedAge);
 
@@ -33,6 +36,7 @@ export const LoadSplashScreen = () => {
             transition={{duration: 0.3}}
             className='load-splash-screen-container'>
                 <h1><span>X</span>Q</h1>
+                <p>HINT: {hints[Math.floor(Math.random() * (hints.length))]}</p>
                 {!ageVerified && !initLoading ?
                 <>
                 <h2>Confirm You Are Over 18</h2>
