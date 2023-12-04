@@ -5,6 +5,7 @@ import { Image } from '../Image/Image';
 import {Gallery} from '../Gallery/Gallery';
 
 import "./Post.css";
+import { AdPlaceHolder } from '../AdPlaceHolder/AdPlaceHolder';
 
 export const Post = ({data, image, video, gallery}) => {
 
@@ -29,7 +30,9 @@ export const Post = ({data, image, video, gallery}) => {
                     <p onClick={handleSource} className='source-button'>Source</p>
                     {data.title ? <p className='post-title'>{data.title}</p> : null}   
                 </div>
-                {video ? 
+                {data?.id === 'advert' ?
+                <AdPlaceHolder />
+                : video ? 
                 <Video alt={data} id={data.id} video={video} /> 
                 : gallery.length > 0 ?
                 <Gallery images={gallery} /> :

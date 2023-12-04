@@ -20,6 +20,8 @@ export const fetchFeed = createAsyncThunk(
 
             let custom_search;
 
+            let feed = [];
+
             const urlParams = new URLSearchParams(window.location.search);
 
             const {default_sources, current} = getState().FeedSlice;
@@ -28,7 +30,7 @@ export const fetchFeed = createAsyncThunk(
             
             let first_post;
 
-            if (post_id && newFeed) {
+            if (post_id && newFeed && post_id !== 'advert') {
                 const post = await Axios.get(`https://www.reddit.com/comments/${post_id}/.json`).then(res => {
                     try {
                         return res.data[0].data.children[0].data;
@@ -113,6 +115,7 @@ export const fetchFeed = createAsyncThunk(
             }
            
             let data;
+
             if (custom_search) {
                data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&include_over_18=on&sort=relevance${after ? `&after=${after}` : ''}`)
                 .then(data => {
@@ -121,7 +124,7 @@ export const fetchFeed = createAsyncThunk(
                     
                     if (posts.length === 0 && new_current?.length === 1) return rejectWithValue({error: true, errorMessage: "404 No Results"}); 
 
-                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search, no_more_results: posts.length <= 5};
+                    return {d: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search, no_more_results: posts.length <= 5};
                 })
                 .catch(err => {
                     console.log(err);
@@ -133,7 +136,7 @@ export const fetchFeed = createAsyncThunk(
     
                     const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0)
     
-                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
+                    return {d: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
                 })
                 .catch(err => {
                     console.log(err);
@@ -141,7 +144,22 @@ export const fetchFeed = createAsyncThunk(
                 });
             }
             
-            return data;
+            for (let i = 0; i < data.d.length; i++) {
+
+                feed.push(data.d[i]);
+
+                if ((i % 3) === 0 && i !== 0) {
+                    feed.push({
+                        advertisement: true,
+                        id: 'advert',
+                    })
+                }
+
+            }
+            
+            let context = {posts: feed, ...data}
+            console.log(context)
+            return context;
 
         } catch (error) {
             console.log(error);

@@ -129,7 +129,7 @@ export const Video = ({video, id, alt}) => {
             onClick={(e) => {e.preventDefault()}}
             muted={muted}
             style={{opacity: loading || error ? 0 : 1}}
-            onCanPlay={onCanPlay}
+            onLoadedData={onCanPlay}
             onTimeUpdate={handleProgress} controls={false} crossOrigin='anonymous' id={video + id} src={video} loop={true} />
             
             <div 
