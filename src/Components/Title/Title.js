@@ -4,6 +4,6 @@ import "./Title.css";
 
 export const Title = () => {
   return (
-    <h1 className='app-title'><span>X</span>Quicky</h1>
+    <h1 className='app-title'><span>M</span>emer</h1>
   )
 }

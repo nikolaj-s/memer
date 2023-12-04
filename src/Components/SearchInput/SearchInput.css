@@ -38,5 +38,5 @@
 }
 
 .search-input-container input:focus {
-    outline: solid 1px red;
+    outline: solid 1px var(--red-color);
 }

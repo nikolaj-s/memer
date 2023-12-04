@@ -135,7 +135,7 @@ export const Video = ({video, id, alt}) => {
             <div 
             onClick={scrub}
              className='video-progress-bar-container'>
-                <div style={{height: '100%', width: `${progress}%`, backgroundColor: 'red', transition: '0.1s'}} ></div>
+                <div style={{height: '100%', width: `${progress}%`, transition: '0.1s'}} ></div>
             </div>
         </div> 
         : null}

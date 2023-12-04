@@ -21,7 +21,7 @@ export const Post = ({data, image, video, gallery}) => {
 
         window.open(link)
     }
-
+console.log(data)
     return (
         <>
             {data?.id ?

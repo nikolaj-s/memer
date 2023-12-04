@@ -11,3 +11,14 @@
     align-items: center;
     overflow-y: auto;
 }
+
+.link-nsfw-version {
+    margin: 10px 0px 0px 0px;
+    color: white;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.link-nsfw-version:hover {
+    opacity: 1;
+}

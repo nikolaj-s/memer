@@ -99,7 +99,7 @@ export const fetchFeed = createAsyncThunk(
             
             if (current.length === 0 && window.location.pathname !== '/' && !exists) {
 
-                const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}&include_over_18=on`).then(res => {
+                const category = await Axios.get(`https://www.reddit.com/subreddits/search.json?q=${window.location.pathname}`).then(res => {
                     return res.data.data.children.map(c => {return {...c.data}}).filter(d => d.over18);
                 }).catch(e => {
                     return rejectWithValue({error: true, errorMessage: "Error 404 Not Found"});
@@ -117,7 +117,7 @@ export const fetchFeed = createAsyncThunk(
             let data;
 
             if (custom_search) {
-               data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&include_over_18=on&sort=relevance${after ? `&after=${after}` : ''}`)
+               data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&sort=relevance${after ? `&after=${after}` : ''}`)
                 .then(data => {
     
                     const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.over_18 && d.post_hint !== 'link')
@@ -134,7 +134,7 @@ export const fetchFeed = createAsyncThunk(
                 data = await Axios.get(`https://www.reddit.com/r/${src}/${sort.value}/.json${after && sort.value === 'top' ? '?after=' + after + '&t=all' : !after && sort === 'top' ? '?t=all' : after ? '?after=' + after : ''}`)
                 .then(data => {
     
-                    const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0)
+                    const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.post_hint !== 'link')
     
                     return {d: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search};
                 })
@@ -175,35 +175,17 @@ const FeedSlice = createSlice({
         current: [],
         default_sources: [{
             after: false,
-            src: 'nsfw'
+            src: 'funny'
         },
         {
             after: false,
-            src: 'porn'
+            src: 'memes'
         },{
             after: false,
-            src: 'HDLesbianGifs'
+            src: 'dankmemes'
         },{
             after: false,
-            src: "NewYorkNineWild"
-        },{
-            after: false,
-            src: "girlsmasturbating"
-        },{
-            after: false,
-            src: 'ass'
-        }, {
-            after: false,
-            src: 'pussy'
-        },{
-            src: 'sexygirls',
-            after: false
-        },{
-            src: 'AlldayfuckNSFW',
-            after: false
-        },{
-            src: 'MagicNsfw',
-            after: false
+            src: 'shitposting'
         }],
         loading: false,
         currentPosition: 0,

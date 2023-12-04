@@ -9,7 +9,6 @@ import { CategoryButton } from '../../Components/Buttons/CategoryButton/Category
 import { Categories } from '../../Util/Categories';
 import { LineSpacer } from '../../Components/LineSpacer/LineSpacer';
 import { SearchInput } from '../../Components/SearchInput/SearchInput';
-import { CobyIcon } from '../../Components/Icons/CobyIcon';
 import { BuiltBy } from '../../Components/BuiltBy/BuiltBy';
 
 export const Menu = () => {
@@ -32,13 +31,13 @@ export const Menu = () => {
             <SearchInput />
             <DividerTitle name={'Categories'} />
             <CategoryButton name={categories[0].name} icon={categories[0].icon} path={"/"} />
-            <CategoryButton name={categories[1].name} icon={<CobyIcon />} path={categories[1].path} />
             <LineSpacer width={'90%'} margin={"15px 0px"} />
             {categories.map((cat, key) => {
-                return key === 0 || key === 1 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
+                return key === 0 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
             })}
             
             <LineSpacer margin={"50px 0px 10px 0px"} width={'90%'} />
+            <a className='link-nsfw-version' href='https://xquicky.com/' target='_blank' rel="noreferrer">Link To NSFW Version</a>
             <BuiltBy />
         </motion.div>
         : null}

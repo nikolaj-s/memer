@@ -31,7 +31,7 @@
 }
 
 .load-splash-screen-container h1 span {
-    color: red;
+    color: var(--red-color);
 }
 
 .confirm-over-18 {
