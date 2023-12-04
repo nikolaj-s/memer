@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectMutedState } from '../../Features/ControlBar/ControlBarSlice';
 import { MediaError } from '../MediaError/MediaError';
 
-export const Video = ({video, id}) => {
+export const Video = ({video, id, alt}) => {
 
     const [playing, togglePlaying] = React.useState(false);
 
@@ -18,6 +18,8 @@ export const Video = ({video, id}) => {
     const [loading, toggleLoading] = React.useState(true);
 
     const [error, toggleError] = React.useState(false);
+
+    const [altAttempted, toggleAltAttempted] = React.useState(false); 
 
     const muted = useSelector(selectMutedState);
 
@@ -98,6 +100,19 @@ export const Video = ({video, id}) => {
         
     }
 
+    const handleError = (e) => {
+
+        if (altAttempted) {
+            toggleError(true);
+            toggleLoading(false); 
+            return;
+        }
+
+        toggleAltAttempted(true);
+
+        e.target.src = video.split('_')[0] + '_360.mp4';
+    }   
+
     return (
         <>
         {video ?
@@ -108,13 +123,13 @@ export const Video = ({video, id}) => {
             : null}
             <VideoPlayOverlayAnimation color="white" interacted={interacted} playing={playing} />
             <video
-            onError={() => {toggleLoading(false); toggleError(true)}}
+            onError={handleError}
             autoPlay={true}
             playsInline
             onClick={(e) => {e.preventDefault()}}
             muted={muted}
             style={{opacity: loading || error ? 0 : 1}}
-            onLoadedData={onCanPlay}
+            onCanPlay={onCanPlay}
             onTimeUpdate={handleProgress} controls={false} crossOrigin='anonymous' id={video + id} src={video} loop={true} />
             
             <div 

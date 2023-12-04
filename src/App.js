@@ -12,6 +12,7 @@ import { fetchLocalData } from './Util/LocalData';
 import { useDispatch } from 'react-redux';
 import { toggleAgeVerification } from './Features/Feed/FeedSlice';
 import { Helmet } from 'react-helmet';
+import { HiddenLinks } from './Components/HiddenLinks/HiddenLinks';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
 
     return (
       <div  className="App">
+        <HiddenLinks />
         <Helmet>
           <meta name='og:link' content={window.location.href} />
           <meta name='twitter:link' content={window.location.href} />

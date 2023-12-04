@@ -1,0 +1,20 @@
+
+.swipe-indicator-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.swipe-indicator-container p {
+    text-align: center;
+    margin: 0px 0px 10px 0px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+
+.swipe-indicator-container svg {
+    width: 30px;
+    height: 30px;
+}

@@ -6,6 +6,7 @@
     align-items: center;
     height: 35px;
     padding: 5px;
+    text-decoration: none;
 }
 
 .category-button svg {
@@ -15,6 +16,7 @@
 
 .category-button h2 {
     margin: 0;
+    text-decoration: none;
     color: var(--text-color);
     font-weight: 300;
     font-size: 1.2rem;

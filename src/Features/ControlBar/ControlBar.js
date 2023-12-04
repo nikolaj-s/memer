@@ -8,6 +8,7 @@ import { selectAudioAvailableState, selectHDState, selectMutedState, toggleHdQua
 import { fetchFeed, selectFeed, selectPage, setPage } from '../Feed/FeedSlice';
 import { selectCurrentSortState } from '../SortOptions/SortOptionsSlice';
 import { AudioButton } from '../../Components/Buttons/AudioButton/AudioButton';
+import { SwipesIndicator } from '../../Components/SwipesIndicator/SwipesIndicator';
 
 export const ControlBar = () => {
 
@@ -35,7 +36,7 @@ export const ControlBar = () => {
         if (newDirection === -1 && page === 0) return;
 
         if (newDirection === 1) {
-            if (feed.length - 5 === page) {
+            if (feed.length - 5 <= page) {
                 dispatch(fetchFeed({sort: sortOption}))
             }
 
@@ -53,9 +54,10 @@ export const ControlBar = () => {
 
     return (
         <div className='control-bar-container'>
-            <ArrowButton action={() => {handlePage(-1)}} />
+            <ArrowButton active={page === 0} action={() => {handlePage(-1)}} />
             <AudioButton action={handleToggleAudio} state={Muted} not_available={audioAvailable} />
             <HDButton action={handleToggleHdQuality} state={HDQuality} />
+            <SwipesIndicator />
             <ArrowButton action={() => {handlePage(1)}} flip={'180deg'} />
         </div>
     )

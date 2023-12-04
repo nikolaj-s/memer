@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Video } from '../Video/Video';
 import { Image } from '../Image/Image';
-import {motion} from 'framer-motion';
 import {Gallery} from '../Gallery/Gallery';
 
 import "./Post.css";
@@ -31,15 +30,14 @@ export const Post = ({data, image, video, gallery}) => {
                     {data.title ? <p className='post-title'>{data.title}</p> : null}   
                 </div>
                 {video ? 
-                <Video id={data.id} video={video} /> 
+                <Video alt={data} id={data.id} video={video} /> 
                 : gallery.length > 0 ?
                 <Gallery images={gallery} /> :
                 image ?
                 <Image image={image} /> :
                 null
                 }
-                <motion.img draggable={false} className='back-drop-post-blur' alt='back-drop-blur-effect' src={data.thumbnail} />
-                
+                <img onError={(e) => {e.target.style.opacity = 0}} onLoad={(e) => {e.target.style.opacity = 0}} draggable={false} className='back-drop-post-blur' alt='back-drop-blur-effect' src={data.thumbnail} />
             </div> 
             : null}
         </>

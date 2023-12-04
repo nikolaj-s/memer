@@ -233,6 +233,8 @@ export const Feed = () => {
             <LoadingMore loading={loading} />
             <Audio src={audio} />
         </div>
+        <link hidden rel="prefetch" href={feed[page + 1]?.url} />
+
         </>
     )
 }

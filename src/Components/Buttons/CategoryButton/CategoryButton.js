@@ -6,7 +6,9 @@ import "./CategoryButton.css";
 
 export const CategoryButton = ({name, state, action, icon, path = "/"}) => {
 
-    const navigate = () => {
+    const navigate = (e) => {
+        e.preventDefault();
+
         if (path === window.location.pathname) return;
 
         let new_url = window.location.protocol + '//' + window.location.host + path;
@@ -15,7 +17,8 @@ export const CategoryButton = ({name, state, action, icon, path = "/"}) => {
     }
 
     return (
-        <motion.div 
+        <motion.a 
+        href={path}
         style={{
         opacity: window.location.pathname === path ? 1 : 0.5,
         cursor: window.location.pathname === path ? 'default' : 'pointer'
@@ -26,6 +29,6 @@ export const CategoryButton = ({name, state, action, icon, path = "/"}) => {
         onClick={navigate} className='category-button'>
             <h2>{name}</h2>
             {icon}
-        </motion.div>
+        </motion.a>
     )
 }

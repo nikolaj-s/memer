@@ -94,8 +94,6 @@ export const fetchFeed = createAsyncThunk(
 
                 
             }
-
-            console.log(current)
             
             if (current.length === 0 && window.location.pathname !== '/' && !exists) {
 
@@ -116,14 +114,14 @@ export const fetchFeed = createAsyncThunk(
            
             let data;
             if (custom_search) {
-               data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&include_over_18=on&sort=hot${after ? `&after=${after}` : ''}`)
+               data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&include_over_18=on&sort=relevance${after ? `&after=${after}` : ''}`)
                 .then(data => {
     
                     const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.over_18 && d.post_hint !== 'link')
                     
                     if (posts.length === 0 && new_current?.length === 1) return rejectWithValue({error: true, errorMessage: "404 No Results"}); 
 
-                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search, no_more_results: posts.length <= 3};
+                    return {posts: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search, no_more_results: posts.length <= 5};
                 })
                 .catch(err => {
                     console.log(err);
@@ -143,7 +141,6 @@ export const fetchFeed = createAsyncThunk(
                 });
             }
             
-            console.log(data)
             return data;
 
         } catch (error) {
@@ -198,7 +195,8 @@ const FeedSlice = createSlice({
         error: false,
         errorMessage: "",
         verified_age: false,
-        initialLoad: true
+        initialLoad: true,
+        swipes: 0
     },
     reducers: {
         setPage: (state, action) => {
@@ -207,6 +205,8 @@ const FeedSlice = createSlice({
             state.page = action.payload[0];
 
             state.direction = action.payload[1];
+
+            state.swipes++;
         },
         toggleAgeVerification: (state, action) => {
             state.verified_age = action.payload;
@@ -294,6 +294,8 @@ export const selectVerifiedAge = state => state.FeedSlice.verified_age;
 export const selectInitialLoading = state => state.FeedSlice.initialLoad;
 
 export const selectDirection = state => state.FeedSlice.direction;
+
+export const selectSwipesCount = state => state.FeedSlice.swipes;
 
 export const {setPage, toggleAgeVerification, setInitPost} = FeedSlice.actions;
 

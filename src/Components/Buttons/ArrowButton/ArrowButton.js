@@ -2,12 +2,13 @@ import React from 'react'
 
 import { motion } from 'framer-motion';
 
-export const ArrowButton = ({action, flip}) => {
+export const ArrowButton = ({action, flip, active}) => {
     return (
         <motion.div 
         transition={{duration: 0.1}}
         whileTap={{scale: 1.3}}
-        whileHover={{opacity: .6}}
+        whileHover={{scale: 1.1}}
+        style={{opacity: active ? 0.5 : 1}}
         onClick={action} className='control-button'>
             <svg style={{
                 rotate: flip ? '180deg' : '0deg'
