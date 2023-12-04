@@ -194,7 +194,6 @@ const FeedSlice = createSlice({
         direction: 0,
         error: false,
         errorMessage: "",
-        verified_age: false,
         initialLoad: true,
         swipes: 0
     },
@@ -207,9 +206,6 @@ const FeedSlice = createSlice({
             state.direction = action.payload[1];
 
             state.swipes++;
-        },
-        toggleAgeVerification: (state, action) => {
-            state.verified_age = action.payload;
         },
         setInitPost: (state, action) => {
             state.initialLoad = false;
@@ -289,14 +285,12 @@ export const selectErrorState = state => state.FeedSlice.error;
 
 export const selectErrorMessage = state => state.FeedSlice.errorMessage;
 
-export const selectVerifiedAge = state => state.FeedSlice.verified_age;
-
 export const selectInitialLoading = state => state.FeedSlice.initialLoad;
 
 export const selectDirection = state => state.FeedSlice.direction;
 
 export const selectSwipesCount = state => state.FeedSlice.swipes;
 
-export const {setPage, toggleAgeVerification, setInitPost} = FeedSlice.actions;
+export const {setPage, setInitPost} = FeedSlice.actions;
 
 export default FeedSlice.reducer;

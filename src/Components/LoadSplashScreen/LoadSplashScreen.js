@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { selectInitialLoading, selectVerifiedAge} from '../../Features/Feed/FeedSlice'
+import { selectInitialLoading} from '../../Features/Feed/FeedSlice'
 import { Hints } from '../../Util/Hints'
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle'
 
@@ -11,13 +11,11 @@ export const LoadSplashScreen = () => {
 
     const hints = Hints;
 
-    const ageVerified = useSelector(selectVerifiedAge);
-
     const initLoading = useSelector(selectInitialLoading);
 
     return (
         <AnimatePresence>
-            {initLoading || !ageVerified ? 
+            {initLoading ? 
             <motion.div 
             initial={{scale: 4}}
             animate={{scale: 1}}

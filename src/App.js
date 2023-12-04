@@ -8,27 +8,10 @@ import { Menu } from './Features/Menu/Menu';
 import { Error } from './Components/Error/Error';
 import { LoadSplashScreen } from './Components/LoadSplashScreen/LoadSplashScreen';
 import React from 'react';
-import { fetchLocalData } from './Util/LocalData';
-import { useDispatch } from 'react-redux';
-import { toggleAgeVerification } from './Features/Feed/FeedSlice';
 import { Helmet } from 'react-helmet';
 import { HiddenLinks } from './Components/HiddenLinks/HiddenLinks';
 
 function App() {
-
-    const dispatch = useDispatch();
-
-    React.useEffect(() => {
-
-      const verified = fetchLocalData();
-
-      if (verified) {
-
-        dispatch(toggleAgeVerification(verified?.age_verified));
-
-      }
-    // eslint-disable-next-line
-    }, [])
 
     return (
       <div  className="App">
