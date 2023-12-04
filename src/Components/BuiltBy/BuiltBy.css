@@ -1,0 +1,20 @@
+
+.built-by-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.built-by-container svg {
+    margin: 0px 10px;
+}
+
+.built-by-container h3 {
+    color: white;
+}
+
+.built-by-container a {
+    margin-left: 10px;
+    color: white;
+    font-size: 1.4rem;
+}

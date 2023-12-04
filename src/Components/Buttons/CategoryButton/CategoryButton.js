@@ -23,6 +23,7 @@ export const CategoryButton = ({name, state, action, icon, path = "/"}) => {
         opacity: window.location.pathname === path ? 1 : 0.5,
         cursor: window.location.pathname === path ? 'default' : 'pointer'
         }}
+        rel='noreferrer'
         transition={{duration: 0.1}}
         whileTap={{opacity: 1, scale: 1.05}}
         whileHover={{opacity: 1}}

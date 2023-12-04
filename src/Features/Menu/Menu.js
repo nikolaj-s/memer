@@ -10,6 +10,7 @@ import { Categories } from '../../Util/Categories';
 import { LineSpacer } from '../../Components/LineSpacer/LineSpacer';
 import { SearchInput } from '../../Components/SearchInput/SearchInput';
 import { CobyIcon } from '../../Components/Icons/CobyIcon';
+import { BuiltBy } from '../../Components/BuiltBy/BuiltBy';
 
 export const Menu = () => {
 
@@ -36,7 +37,9 @@ export const Menu = () => {
             {categories.map((cat, key) => {
                 return key === 0 || key === 1 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
             })}
-            <div style={{height: 80, flexShrink: 0}} />
+            
+            <LineSpacer margin={"50px 0px 10px 0px"} width={'90%'} />
+            <BuiltBy />
         </motion.div>
         : null}
         
