@@ -9,6 +9,7 @@ import { fetchFeed, selectFeed, selectPage, setPage } from '../Feed/FeedSlice';
 import { selectCurrentSortState } from '../SortOptions/SortOptionsSlice';
 import { AudioButton } from '../../Components/Buttons/AudioButton/AudioButton';
 import { SwipesIndicator } from '../../Components/SwipesIndicator/SwipesIndicator';
+import { CopyButton } from '../../Components/CopyButton/CopyButton';
 
 export const ControlBar = () => {
 
@@ -58,6 +59,7 @@ export const ControlBar = () => {
             <AudioButton action={handleToggleAudio} state={Muted} not_available={audioAvailable} />
             <HDButton action={handleToggleHdQuality} state={HDQuality} />
             <SwipesIndicator />
+            <CopyButton />
             <ArrowButton action={() => {handlePage(1)}} flip={'180deg'} />
         </div>
     )

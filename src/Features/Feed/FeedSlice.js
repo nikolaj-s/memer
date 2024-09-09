@@ -148,13 +148,6 @@ export const fetchFeed = createAsyncThunk(
 
                 feed.push(data.d[i]);
 
-                if ((i % 3) === 0 && i !== 0) {
-                    feed.push({
-                        advertisement: true,
-                        id: 'advert',
-                    })
-                }
-
             }
             
             let context = {posts: feed, ...data}
