@@ -8,8 +8,8 @@ import { selectAudioAvailableState, selectHDState, selectMutedState, toggleHdQua
 import { fetchFeed, selectFeed, selectPage, setPage } from '../Feed/FeedSlice';
 import { selectCurrentSortState } from '../SortOptions/SortOptionsSlice';
 import { AudioButton } from '../../Components/Buttons/AudioButton/AudioButton';
-import { SwipesIndicator } from '../../Components/SwipesIndicator/SwipesIndicator';
-import { CopyButton } from '../../Components/CopyButton/CopyButton';
+import { DownloadButton } from '../../Components/Buttons/DownloadButton/DownloadButton'
+import { CopyButton } from '../../Components/Buttons/CopyButton/CopyButton';
 
 export const ControlBar = () => {
 
@@ -27,8 +27,24 @@ export const ControlBar = () => {
 
     const feed = useSelector(selectFeed);
 
+    React.useEffect(() => {
+
+        const hd = JSON.parse(localStorage.getItem('hdQuality'));
+
+        if (hd === true) {
+
+            dispatch(toggleHdQuality(true));
+        
+        }
+    // eslint-disable-next-line
+    }, [])
+
     const handleToggleHdQuality = () => {
+        
+        localStorage.setItem("hdQuality", JSON.stringify(!HDQuality));
+
         dispatch(toggleHdQuality(!HDQuality));
+    
     }
     
     const handlePage = (newDirection) => {
@@ -58,8 +74,8 @@ export const ControlBar = () => {
             <ArrowButton active={page === 0} action={() => {handlePage(-1)}} />
             <AudioButton action={handleToggleAudio} state={Muted} not_available={audioAvailable} />
             <HDButton action={handleToggleHdQuality} state={HDQuality} />
-            <SwipesIndicator />
             <CopyButton />
+            <DownloadButton />
             <ArrowButton action={() => {handlePage(1)}} flip={'180deg'} />
         </div>
     )

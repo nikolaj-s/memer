@@ -10,6 +10,7 @@ import { LoadingMore } from '../../Components/LoadingMore/LoadingMore';
 import { selectHDState} from '../ControlBar/ControlBarSlice';
 import { Audio } from '../../Components/Audio/Audio';
 import { MetaTags } from '../../Components/Helmet/Helmet';
+import { ExpandedImage } from '../../Components/ExpandedImage/ExpandedImage';
 
 export const Feed = () => {
 
@@ -233,7 +234,7 @@ export const Feed = () => {
             <LoadingMore loading={loading} />
             <Audio src={audio} />
         </div>
-
+        <ExpandedImage />
         </>
     )
 }

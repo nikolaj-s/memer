@@ -119,11 +119,14 @@ export const fetchFeed = createAsyncThunk(
             if (custom_search) {
                data = await Axios.get(`https://www.reddit.com/search.json?q=${src}&sort=relevance${after ? `&after=${after}` : ''}`)
                 .then(data => {
-    
-                    const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.over_18 && d.post_hint !== 'link')
-                    
-                    if (posts.length === 0 && new_current?.length === 1) return rejectWithValue({error: true, errorMessage: "404 No Results"}); 
 
+                    const posts = data.data.data.children.map(c => {return {...c.data}}).filter(d => (d.preview || d.gallery_data) && d.selftext.length === 0 && d.post_hint !== 'link')
+                    
+                    if (posts.length === 0 && new_current?.length === 1) {
+                        return data = {error: true, errorMessage: "404 No Results"};
+                        
+                    }
+                    
                     return {d: posts, after: data.data.data.after, src: src, newFeed: newFeed, new_current: new_current, custom_search: custom_search, no_more_results: posts.length <= 5};
                 })
                 .catch(err => {
@@ -142,6 +145,10 @@ export const fetchFeed = createAsyncThunk(
                     console.log(err);
                     return rejectWithValue({error: true, errorMessage: err.message})
                 });
+            }
+
+            if (data.error) {
+                return rejectWithValue(data);
             }
             
             for (let i = 0; i < data.d.length; i++) {
@@ -188,9 +195,14 @@ const FeedSlice = createSlice({
         error: false,
         errorMessage: "",
         initialLoad: true,
-        swipes: 0
+        swipes: 0,
+        expanded: false
     },
     reducers: {
+        toggleExpanded: (state, action) => {
+
+            state.expanded = action.payload;
+        },
         setPage: (state, action) => {
             if (action.payload[1] === -1 && state.page[0] === 0) return;
             
@@ -284,6 +296,8 @@ export const selectDirection = state => state.FeedSlice.direction;
 
 export const selectSwipesCount = state => state.FeedSlice.swipes;
 
-export const {setPage, setInitPost} = FeedSlice.actions;
+export const selectExpanded = state => state.FeedSlice.expanded;
+
+export const {toggleExpanded, setPage, setInitPost} = FeedSlice.actions;
 
 export default FeedSlice.reducer;
