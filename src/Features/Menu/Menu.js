@@ -31,10 +31,11 @@ export const Menu = () => {
             <SearchInput />
             <DividerTitle name={'Featured'} />
             <CategoryButton name={categories[0].name} icon={categories[0].icon} path={"/"} />
+            <CategoryButton name={categories[1].name} icon={categories[1].icon} path={"/random"} />
             <DividerTitle name={'Categories'} />
             
             {categories.map((cat, key) => {
-                return key === 0 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
+                return key === 0 || key === 1 ? null : <CategoryButton key={cat.path} name={cat.name} icon={cat.icon} path={cat.path} />
             })}
             
             <LineSpacer margin={"50px 0px 10px 0px"} width={'90%'} />

@@ -118,7 +118,7 @@ export const Feed = () => {
 
         if (!data) return;
 
-        if (data?.id) {
+        if (data?.id && page !== 0) {
             
             urlParams.set('post', data.id);
 

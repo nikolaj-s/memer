@@ -38,7 +38,8 @@ export const SortOptions = () => {
         return () => {  
             document.body.removeEventListener('click', handleToggleSortMenu);
         }
-
+        
+    // eslint-disable-next-line
     }, [sortMenuOpen])
 
     
